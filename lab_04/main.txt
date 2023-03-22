@@ -1,0 +1,28 @@
+@ delete_min_sum_column:
+@     call find_min_sum_column
+@     ret
+
+@ find_min_sum_column:
+@     mov bx, 0h
+@     mov cl, [m]
+@     lable1:
+@         mov dh, cl
+@         mov cl, [n]
+@         mov sum, 0ah
+@         lable2:
+@             mov bl, matrix[bx]
+@             add sum, bl
+@             inc bx
+@         loop label2
+
+@         mov ah, 21h
+@         mov dl, sum
+@         int 21h
+
+
+@     ret
+
+    minsum db 0
+    minindex db 0
+
+    sum db 0
