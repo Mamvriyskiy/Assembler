@@ -1,0 +1,59 @@
+EXTRN EXIT: NEAR
+PUBLIC NUMBER
+
+PUBLIC INPUT_NUM_MENU
+PUBLIC INPUTNUMBER
+
+DATASEG SEGMENT PARA PUBLIC 'DATA'
+    NUMBER DW 0
+    INMSG DB 'Enter unsigned decimal number: $'
+DATASEG ENDS
+
+CODESEG SEGMENT PARA PUBLIC 'CODE'
+    ASSUME CS:CODESEG, DS:DATASEG
+
+INPUT_NUM_MENU PROC NEAR
+    MOV AH, 1
+    INT 21H
+
+    cmp al, 13
+	je EXIT
+
+    SUB AL, '0'
+
+    MOV CL, 2
+    MUL CL
+    MOV SI, AX
+    RET
+INPUT_NUM_MENU ENDP
+
+INPUTNUMBER PROC NEAR
+    MOV AH, 9
+    MOV DX, OFFSET INMSG
+    INT 21H
+
+    MOV BX, 0
+
+    INSYMB:
+        MOV AH, 1
+        INT 21H
+        CMP AL, 13
+
+        JE ENDINP
+
+        MOV CL, AL
+        MOV AX, 10
+        MUL BX
+        MOV BX, AX
+
+        SUB CL, '0'
+        ADD BX, CX
+        JMP INSYMB
+
+    ENDINP:
+    MOV NUMBER, BX
+    RET
+INPUTNUMBER ENDP
+
+CODESEG ENDS
+END
